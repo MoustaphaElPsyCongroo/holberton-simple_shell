@@ -23,13 +23,10 @@ int exec_command(char **path, char **env)
 
 	if (child_pid == 0)
 	{
-		if (path[0][0] != ' ')
+		if (execve(path[0], path, env) == -1)
 		{
-			if (execve(path[0], path, env) == -1)
-			{
-				perror("./shell");
-				return (0);
-			}
+			perror("./shell");
+			return (0);
 		}
 	}
 	else
