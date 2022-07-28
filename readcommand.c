@@ -15,24 +15,27 @@ char *readcommand(void)
 
 	rd = getline(&command, &n, stdin);
 
-	if (command[i] == ' ')
-	{
-		while (command[i])
-		{
-			if (command[i + 1] == 0)
-				return (NULL);
-
-			i++;
-		}
-	}
-
-	if (command[0] == '\n' && command[1] == 0)
-		return (NULL);
-
 	if (rd == -1)
 	{
 		free(command);
 		exit(0);
+	}
+
+	while (command[i] == ' ')
+	{
+		i++;
+
+		if (command[i + 1] == 0)
+		{
+			free(command);
+			return (NULL);
+		}
+	}
+
+	if (command[0] == '\n')
+	{
+		free(command);
+		return (NULL);
 	}
 
 	command[rd - 1] = 0;

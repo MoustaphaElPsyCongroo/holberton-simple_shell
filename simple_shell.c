@@ -21,7 +21,7 @@ int main(void)
 
 		command = readcommand();
 
-		if (!command)
+		if (command == NULL)
 			continue;
 
 		argv = split(command);
