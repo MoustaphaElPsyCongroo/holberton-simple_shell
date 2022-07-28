@@ -8,13 +8,15 @@
  * exec_command - Executes a program
  * @path: Array containing the path to the program to execute and arguments
  * @env: Array of strings representing the current environement
+ * @prog_name: Name of the shell
  *
  * Return: 0
  */
-int exec_command(char **path, char **env)
+int exec_command(char **path, char **env, char *prog_name)
 {
 	pid_t child_pid;
 	int status;
+	char *pth = path[0];
 
 	child_pid = fork();
 
@@ -23,9 +25,19 @@ int exec_command(char **path, char **env)
 
 	if (child_pid == 0)
 	{
-		if (execve(path[0], path, env) == -1)
+		if (pth[0] != '/' && pth[0] != '.')
+			pth = checkpath(pth);
+
+		if (pth == NULL)
 		{
-			perror("./shell");
+			execve(path[0], path, env);
+			perror(prog_name);
+			return (0);
+		}
+
+		if (execve(pth, path, env) == -1)
+		{
+			perror(prog_name);
 			return (0);
 		}
 	}

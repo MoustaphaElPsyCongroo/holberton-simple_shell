@@ -5,10 +5,12 @@
 
 /**
  * main - Launch the Simple shell
+ * @ac: Argument count (unused)
+ * @av: Arg vector
  *
  * Return: 0 if success (including quitting)), -1 if fail
  */
-int main(void)
+int main(__attribute__((unused)) int ac, char **av)
 {
 	char *command;
 	char **argv;
@@ -33,7 +35,7 @@ int main(void)
 		}
 		else
 		{
-			running = exec_command(argv, environ);
+			running = exec_command(argv, environ, av[0]);
 			free(command);
 			free(argv);
 		}
