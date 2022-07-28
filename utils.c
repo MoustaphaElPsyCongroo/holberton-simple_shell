@@ -85,15 +85,15 @@ char *_getenv(const char *name)
 	{
 		i = 0;
 
-		while (environ[j][i] != '=')
+		while (name[i])
 		{
-			if (environ[j][i] == name[i])
-				i++;
-			else
+			if (environ[j][i] != name[i])
 				break;
+
+			i++;
 		}
 
-		if (environ[j][i] == '=')
+		if (environ[j][i] == '=' && name[i] == 0)
 		{
 			value = &(environ[j][i + 1]);
 			break;

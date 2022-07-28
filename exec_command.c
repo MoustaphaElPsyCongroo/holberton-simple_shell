@@ -21,7 +21,7 @@ int exec_command(char **path, char **env, char *prog_name)
 	child_pid = fork();
 
 	if (child_pid == -1)
-		perror("Can't create new process");
+		perror(prog_name);
 
 	if (child_pid == 0)
 	{
@@ -30,7 +30,6 @@ int exec_command(char **path, char **env, char *prog_name)
 
 		if (pth == NULL)
 		{
-			execve(path[0], path, env);
 			perror(prog_name);
 			return (0);
 		}

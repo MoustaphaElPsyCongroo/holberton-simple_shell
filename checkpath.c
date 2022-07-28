@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * checkpath - Searches for files in the PATH
@@ -29,7 +30,10 @@ char *checkpath(char *filename)
 	{
 		filepath = alloc_concat(cur_folder, slash_filename);
 		if (filepath == NULL)
+		{
+			perror("Erro");
 			return (NULL);
+		}
 
 		if (stat(filepath, &st) != 0)
 		{
