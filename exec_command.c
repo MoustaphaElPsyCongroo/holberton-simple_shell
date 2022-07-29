@@ -30,7 +30,7 @@ int exec_command(char **path, char **env, char *prog_name)
 
 		if (pth == NULL)
 		{
-			perror(prog_name);
+			fprintf(stderr, "%s: 1: %s: not found", prog_name, path[0]);
 			return (0);
 		}
 
