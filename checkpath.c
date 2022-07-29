@@ -20,6 +20,9 @@ char *checkpath(char *filename)
 	char *filepath;
 	struct stat st;
 
+	if (path == NULL)
+		return (NULL);
+
 	slash_filename = alloc_concat(folder_sep, filename);
 	if (slash_filename == NULL)
 		return (NULL);
@@ -31,7 +34,6 @@ char *checkpath(char *filename)
 		filepath = alloc_concat(cur_folder, slash_filename);
 		if (filepath == NULL)
 		{
-			perror("Erro");
 			return (NULL);
 		}
 
