@@ -49,15 +49,17 @@ char *trim(char *str)
 
 /**
  * readcommand - Reads a command entered by the user
+ * @nb: The number of times a command is entered
  * Return: The command read, or NULL if fail
  */
-char *readcommand(void)
+char *readcommand(char *nb)
 {
 	char *command = NULL;
 	ssize_t rd = 0;
-	size_t n = 0;
+	size_t n = 2;
 
 	rd = getline(&command, &n, stdin);
+	nb[0]++;
 
 	if (rd == -1)
 	{

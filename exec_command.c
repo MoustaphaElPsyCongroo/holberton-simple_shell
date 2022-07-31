@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 
 /**
  * exec_command - Executes a program
@@ -10,40 +11,36 @@
  * @env: Array of strings representing the current environement
  * @prog_name: Name of the shell
  *
+ *
  * Return: 0
  */
-int exec_command(char **path, char **env, char *prog_name)
+int exec_command(char **path, char **env, char *prog_name, int is_terminal)
 {
 	pid_t child_pid;
 	int status;
-	char *pth = path[0];
+	int res = 0;
 
 	child_pid = fork();
 
 	if (child_pid == -1)
-		perror(prog_name);
+		perror("fork");
 
 	if (child_pid == 0)
 	{
-		if (pth[0] != '/' && pth[0] != '.')
-			pth = checkpath(pth);
-
-		if (pth == NULL)
+		if (execve(path[0], path, env) == -1)
 		{
 			perror(prog_name);
-			return (0);
-		}
-
-		if (execve(pth, path, env) == -1)
-		{
-			perror(prog_name);
-			return (0);
+			return (1);
 		}
 	}
 	else
 	{
 		wait(&status);
-	}
 
-	return (1);
+	}
+	if (WIFEXITED(status) && !is_terminal)
+		res = WEXITSTATUS(status);
+
+	return (res);
+
 }
