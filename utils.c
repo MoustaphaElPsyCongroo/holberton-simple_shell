@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 /**
  * _strlen - Gets the length of a string
@@ -19,54 +20,6 @@ int _strlen(char *s)
 		count++;
 
 	return (count);
-}
-
-/**
- * _strcpy - Copies a string to a buffer
- * @dest: The buffer where to copy the string to
- * @src: The string to copy
- *
- * Return: The pointer to dest
- */
-char *_strcpy(char *dest, char *src)
-{
-	int i;
-
-	for (i = 0; src[i]; i++)
-	{
-		dest[i] = src[i];
-	}
-
-	dest[i] = 0;
-
-	return (dest);
-}
-
-/**
- * _strcat - Concatenates two strings
- * @dest: The base string
- * @src: The string to concatenate to dest
- *
- * Return: A pointer to the resulting string dest
- */
-char *_strcat(char *dest, char *src)
-{
-	int i = 0;
-	int j = 0;
-
-	while (dest[i])
-		i++;
-
-	while (src[j])
-	{
-		dest[i] = src[j];
-		i++;
-		j++;
-	}
-
-	dest[i] = 0;
-
-	return (dest);
 }
 
 /**
@@ -143,4 +96,24 @@ char *alloc_concat(char *str1, char *str2)
 	dest[i] = 0;
 
 	return (dest);
+}
+
+/**
+ * free_everything - Frees anything
+ * @n: The number of variable parameters
+ */
+void free_everything(int n, ...)
+{
+	int i = n;
+	va_list tofree;
+
+	va_start(tofree, n);
+
+	if (n == 0)
+		return;
+
+	while (i--)
+		free(va_arg(tofree, char *));
+
+	va_end(tofree);
 }

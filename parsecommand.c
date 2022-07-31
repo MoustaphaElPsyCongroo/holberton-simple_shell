@@ -109,37 +109,11 @@ char **splitcommand(char *command, char **folderlist)
 
 	while (cur_word)
 	{
-/*		if (i == 0)
-		{
-	//		cur_word_bkp = alloc_concat("", cur_word);
-
-			cur_word = checkfolderlist(folderlist, cur_word);
-
-			if (cur_word == NULL)
-			{
-				break;
-	*			spl[0] = NULL;
-				spl[1] = ++cur_word_bkp;
-				spl[2] = NULL;
-				return (spl);
-			}
-		}
-*/
 		spl[i] = cur_word;
 		i++;
 		cur_word = strtok(NULL, " ");
 	}
 
-/*	if (i == 0)
-	{
-		cur_word = strtok(command, " ");
-
-		spl[0] = NULL;
-		spl[1] = ++cur_word;
-		spl[2] = NULL;
-		return (spl);
-	}
-*/
 	spl[i] = NULL;
 	return (spl);
 }

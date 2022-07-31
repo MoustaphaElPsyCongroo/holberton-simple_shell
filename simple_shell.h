@@ -10,6 +10,9 @@ char **checkpath(char *command);
 char **split(char *str, char *delim);
 int exec_command(char **path, char **env, char *prog_name, int is_terminal);
 char *readcommand(char *);
+char *err_notfound(char *command, char *total_commands, char *prog_name);
+void free_everything(int n, ...);
+
 
 char **splitcommand(char *command, char **folderlist);
 

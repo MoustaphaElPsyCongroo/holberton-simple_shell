@@ -16,14 +16,8 @@
 int main(__attribute__((unused)) int ac, char **av)
 {
 	char *command;
-	char *cur_cmd;
 	char **argv;
 	char *err;
-	char *err_temp1;
-	char *err_temp2;
-	char *err_temp3;
-	char *err_temp4;
-	char *err_temp5;
 	int stop = 0;
 	char total_commands[] = {"0"};
 	char is_terminal;
@@ -32,6 +26,10 @@ int main(__attribute__((unused)) int ac, char **av)
 	char *path;
 	char *path_cpy;
 	char **path_arr;
+	struct stat st;
+	char *cur_word;
+	int not_found;
+	int i;
 
 
 	while (!stop)
@@ -61,36 +59,56 @@ int main(__attribute__((unused)) int ac, char **av)
 		path = _getenv("PATH");
 		if (path == NULL)
 		{
-			free(slash_command);
-			perror("get path");
+			cur_word = strtok(slash_command, " ");
+			argv = malloc(sizeof(char) * 1024);
+
+			if (is_fullpath == 0)
+			{
+				argv[0] = NULL;
+				argv[1] = cur_word;
+				argv[2] = NULL;
+			}
+			else
+			{
+				not_found = access(cur_word, F_OK) && access(cur_word, X_OK);
+				if (!not_found)
+				{
+					for (i = 0; cur_word; i++)
+					{
+						argv[i] = cur_word;
+						cur_word = strtok(NULL, " ");
+					}
+					argv[i] = NULL;
+					printf("argv0: %s", argv[0]);
+					printf("argv1: %s", argv[1]);
+				}
+				else
+				{
+					argv[0] = NULL;
+					argv[1] = cur_word;
+					argv[2] = NULL;
+				}
+			}
 		}
+		else
+		{
+			path_cpy = alloc_concat("", path);
+			path_arr = split(path_cpy, ":");
 
-		path_cpy = alloc_concat("", path);
-		path_arr = split(path_cpy, ":");
-
-		argv = splitcommand(slash_command, path_arr);
+			argv = splitcommand(slash_command, path_arr);
+		}
 
 		if (argv[0] == NULL && argv[1])
 		{
-			cur_cmd = argv[1];
-			err_temp1 = alloc_concat("", av[0]);
-			err_temp2 = alloc_concat(err_temp1, ": ");
-			free(err_temp1);
-			err_temp3 = alloc_concat(err_temp2, total_commands);
-			free(err_temp2);
-			err_temp4 = alloc_concat(err_temp3, ": ");
-			free(err_temp3);
-			err_temp5 = alloc_concat(err_temp4, cur_cmd);
-			free(err_temp4);
-			err = alloc_concat(err_temp5, ": not found\n");
-			free(err_temp5);
-			write(STDERR_FILENO, err, _strlen(err));
-			free(err);
-			free(argv);
-			free(path_cpy);
-			free(path_arr);
-			free(slash_command);
-
+			err = err_notfound(argv[1], total_commands, av[0]);
+			if (err == NULL)
+				perror("malloc");
+			else
+				free(err);
+			if (path)
+				free_everything(4, argv, path_cpy, path_arr, slash_command);
+			else
+				free_everything(2, argv, slash_command);
 
 			if (!is_terminal)
 				exit(127);
@@ -102,10 +120,10 @@ int main(__attribute__((unused)) int ac, char **av)
 			stop = exec_command(argv, environ, av[0], is_terminal);
 			if (is_fullpath == 0)
 				free(argv[0]);
-			free(argv);
-			free(path_cpy);
-			free(path_arr);
-			free(slash_command);
+			if (path)
+				free_everything(4, argv, path_cpy, path_arr, slash_command);
+			else
+				free_everything(2, argv, slash_command);
 		}
 
 	}
