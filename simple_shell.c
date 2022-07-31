@@ -28,12 +28,6 @@ int main(__attribute__((unused)) int ac, char **av)
 	char total_commands[] = {"0"};
 	char is_terminal;
 	int is_fullpath = 0;
-	int size = 1024;
-	char *buf;
-	int i = 0;
-	int j = 0;
-	int k = 0;
-	int l = 0;
 	char *slash_command = NULL;
 	char *path;
 	char *path_cpy;

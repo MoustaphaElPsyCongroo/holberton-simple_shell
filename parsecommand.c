@@ -85,7 +85,6 @@ char **splitcommand(char *command, char **folderlist)
 	int buf = 1024;
 	char **spl;
 	char *cur_word;
-	char *cur_word_bkp;
 
 	spl = malloc(sizeof(char) * buf);
 
