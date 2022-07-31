@@ -107,26 +107,40 @@ char *_getenv(const char *name)
 
 /**
  * alloc_concat - Concatenates two strings, allocating memory for them
- * @dest: Destination string
- * @tocat: String to concatenate to dest
+ * @str1: First string to concatenate
+ * @str2: Second string to concatenate
  *
  * Return: A pointer to the new string, or NULL if fail
  */
-char *alloc_concat(char *dest, char *tocat)
+char *alloc_concat(char *str1, char *str2)
 {
 	int len1;
 	int len2;
-	char *s;
+	char *dest;
+	int i = 0;
+	int j = 0;
 
-	len1 = _strlen(dest);
-	len2 = _strlen(tocat);
+	len1 = _strlen(str1);
+	len2 = _strlen(str2);
 
-	s = malloc(len1 + len2 + 1);
-	if (s == NULL)
+	dest = malloc(len1 + len2 + 1);
+	if (dest == NULL)
 		return (NULL);
 
-	s = _strcpy(s, dest);
-	s = _strcat(s, tocat);
+	while (str1[i])
+	{
+		dest[i] = str1[i];
+		i++;
+	}
 
-	return (s);
+	while (str2[j])
+	{
+		dest[i] = str2[j];
+		i++;
+		j++;
+	}
+
+	dest[i] = 0;
+
+	return (dest);
 }

@@ -27,6 +27,18 @@ int main(__attribute__((unused)) int ac, char **av)
 	int stop = 0;
 	char total_commands[] = {"0"};
 	char is_terminal;
+	int is_fullpath = 0;
+	int size = 1024;
+	char *buf;
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	int l = 0;
+	char *slash_command = NULL;
+	char *path;
+	char *path_cpy;
+	char **path_arr;
+
 
 	while (!stop)
 	{
@@ -39,66 +51,30 @@ int main(__attribute__((unused)) int ac, char **av)
 		if (command == NULL)
 			continue;
 
-/*		argv = split(command, " ");*/
-		argv = checkpath(command);
-/*		printf("%s", slash_command);
-		free(slash_command);
-		continue;
-
-		slash_command = alloc_concat("/", command);
-
-		printf("transfo commande: %s\n", slash_command);
-		free(command);
-
-		ppath = _getenv("PATH");
-		if (ppath == NULL)
-			return (0);
-
-		pathcpy = alloc_concat("", ppath);
-		ppath_arr = split(pathcpy, ":");
-
-		while (ppath_arr[i])
+		if (command[0] != '/' && command[0] != '.')
 		{
-			buf = malloc(1024);
-
-			while (ppath_arr[i][j])
-				buf[k++] = ppath_arr[i][j++];
-
-			while (slash_command[l])
-			{
-				buf[k++] = slash_command[l++];
-			}
-			buf[k] = 0;
-
-			if (stat(buf, &st) != 0)
-			{
-			i++;
-			j = 0;
-			k = 0;
-			l = 0;
-			free(buf);
-			}
-			else
-			{
-				printf("found");
-				command = buf;
-				free(buf);
-				break;
-			}
+			is_fullpath = 0;
+			slash_command = alloc_concat("/", command);
+			free(command);
+		}
+		else
+		{
+			is_fullpath = 1;
+			slash_command = alloc_concat("", command);
+			free(command);
 		}
 
-		write(STDERR_FILENO, av[0], _strlen(av[0]));
-		free(ppath_arr);
-		free(pathcpy);
-		free(slash_command);
-		i = 0;
-		j = 0;
-		k = 0;
-		l = 0;
+		path = _getenv("PATH");
+		if (path == NULL)
+		{
+			free(slash_command);
+			perror("get path");
+		}
 
+		path_cpy = alloc_concat("", path);
+		path_arr = split(path_cpy, ":");
 
-		continue;
-*/
+		argv = splitcommand(slash_command, path_arr);
 
 		if (argv[0] == NULL && argv[1])
 		{
@@ -117,7 +93,10 @@ int main(__attribute__((unused)) int ac, char **av)
 			write(STDERR_FILENO, err, _strlen(err));
 			free(err);
 			free(argv);
-/*			free(command); */
+			free(path_cpy);
+			free(path_arr);
+			free(slash_command);
+
 
 			if (!is_terminal)
 				exit(127);
@@ -127,9 +106,12 @@ int main(__attribute__((unused)) int ac, char **av)
 		else
 		{
 			stop = exec_command(argv, environ, av[0], is_terminal);
-			free(argv[0]);
+			if (is_fullpath == 0)
+				free(argv[0]);
 			free(argv);
-/*			free(command); */
+			free(path_cpy);
+			free(path_arr);
+			free(slash_command);
 		}
 
 	}
