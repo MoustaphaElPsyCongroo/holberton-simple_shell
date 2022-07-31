@@ -26,7 +26,6 @@ int main(__attribute__((unused)) int ac, char **av)
 	char *path;
 	char *path_cpy;
 	char **path_arr;
-	struct stat st;
 	char *cur_word;
 	int not_found;
 	int i;
