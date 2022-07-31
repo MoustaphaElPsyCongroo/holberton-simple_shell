@@ -64,7 +64,7 @@ int main(__attribute__((unused)) int ac, char **av)
 			if (is_fullpath == 0)
 			{
 				argv[0] = NULL;
-				argv[1] = cur_word;
+				argv[1] = ++cur_word;
 				argv[2] = NULL;
 			}
 			else
@@ -78,8 +78,6 @@ int main(__attribute__((unused)) int ac, char **av)
 						cur_word = strtok(NULL, " ");
 					}
 					argv[i] = NULL;
-					printf("argv0: %s", argv[0]);
-					printf("argv1: %s", argv[1]);
 				}
 				else
 				{
@@ -94,7 +92,7 @@ int main(__attribute__((unused)) int ac, char **av)
 			path_cpy = alloc_concat("", path);
 			path_arr = split(path_cpy, ":");
 
-			argv = splitcommand(slash_command, path_arr);
+			argv = splitcommand(slash_command, path_arr, is_fullpath);
 		}
 
 		if (argv[0] == NULL && argv[1])

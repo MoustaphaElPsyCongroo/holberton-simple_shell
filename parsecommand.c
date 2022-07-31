@@ -79,7 +79,7 @@ char *checkfolderlist(char **path_arr, char *slash_file)
 	return (NULL);
 }
 
-char **splitcommand(char *command, char **folderlist)
+char **splitcommand(char *command, char **folderlist, int is_fullpath)
 {
 	int i = 0;
 	int buf = 1024;
@@ -102,7 +102,10 @@ char **splitcommand(char *command, char **folderlist)
 	{
 		cur_word = strtok(command, " ");
 		spl[0] = NULL;
-		spl[1] = ++cur_word;
+		if (!is_fullpath)
+			spl[1] = ++cur_word;
+		else
+			spl[1] = cur_word;
 		spl[2] = NULL;
 		return (spl);
 	}
@@ -147,7 +150,7 @@ char **checkpath(char *command)
 	path_cpy = alloc_concat("", path);
 	path_arr = split(path_cpy, ":");
 
-	argv = splitcommand(slash_command, path_arr);
+	argv = splitcommand(slash_command, path_arr, 1);
 	free(path_arr);
 	free(path_cpy);
 
