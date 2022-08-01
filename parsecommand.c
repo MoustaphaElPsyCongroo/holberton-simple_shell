@@ -7,78 +7,44 @@
 #include <string.h>
 
 /**
- * parsecommand - Checks if a command has its full path
+ * slashifycommand - Ensures a command is preceded  by a /
  * @command: The command to parse, either in name or full path
+ * @is_fullpath: An int to indicate if the command is a full path
  *
- * Return: A pointer to the command's full path, or NULL if fail
+ * Return: A pointer to the slashified command, or NULL if fail
  */
-char *parsecommand(char *command)
+char *slashifycommand(char *command, int *is_fullpath)
 {
-	char *slash = "/";
 	char *slash_command;
 
 	if (command[0] != '/' && command[0] != '.')
 	{
-		slash_command = alloc_concat(slash, command);
+		slash_command = alloc_concat("/", command);
+		*is_fullpath = 0;
 	}
 	else
 	{
 		slash_command = alloc_concat("", command);
+		*is_fullpath = 1;
 	}
-
-	if (slash_command == NULL)
-		return (NULL);
+	free(command);
 
 	return (slash_command);
 }
 
+
 /**
- * checkfolderlist - Checks if a file exists in a list of paths
- * @path_arr: List of folders
- * @slash_file: File to search, prefixed by a /
+ * splitcommand - Splits a command into it and its arguments
+ * @command: The command to split
+ * @folderlist: A list of folders to search the command in
+ * @is_fullpath: An int indicating if the command is a full path or not
  *
- * Return: The full path of the file if it exists, NULL otherwise
+ * Return:
+ *	An array
+ *		of the command + its arguments if found
+ *		of the command itself surrounded by NULL -> <NULL> <cmd> <NULL>
+ *	or NULL if fail
  */
-char *checkfolderlist(char **path_arr, char *slash_file)
-{
-	int size = 1024;
-	char *buf;
-	int i = 0;
-	int j = 0;
-	int k = 0;
-	int l = 0;
-
-	if (access(slash_file, F_OK) == 0)
-		return (slash_file);
-
-	while (path_arr[i])
-	{
-		buf = malloc(sizeof(char) * size);
-		if (buf == NULL)
-			return (NULL);
-
-		while (path_arr[i][j])
-			buf[k++] = path_arr[i][j++];
-		while (slash_file[l])
-			buf[k++] = slash_file[l++];
-		buf[k] = 0;
-
-		if (access(buf, F_OK) != 0)
-		{
-			i++;
-			j = 0;
-			k = 0;
-			l = 0;
-			free(buf);
-		}
-		else
-		{
-			return (buf);
-		}
-	}
-	return (NULL);
-}
-
 char **splitcommand(char *command, char **folderlist, int is_fullpath)
 {
 	int i = 0;
@@ -122,40 +88,121 @@ char **splitcommand(char *command, char **folderlist, int is_fullpath)
 }
 
 /**
- * checkpath - Checks if a command exists in the PATH
- * @command: The command to search, either in name or full path
+ * split_nopath - Splits a command if there is no PATH env
+ * @slash_command: A slash-preceded command, either in name or full path
+ * @is_fullpath: Int indicating if slash_command is a full path
  *
- * Return: Array to command's full path and args if it exists, NULL otherwise
+ * Return: An array of the command + arguments, or NULL if fail
  */
-char **checkpath(char *command)
+char **split_nopath(char *slash_command, int is_fullpath)
 {
-	char *slash_command;
+	char *cur_word;
 	char **argv;
-	char *path;
-	char *path_cpy;
-	char **path_arr;
+	int not_found;
+	int i;
 
-	slash_command = parsecommand(command);
+	cur_word = strtok(slash_command, " ");
+	argv = malloc(sizeof(char) * 1024);
 
-	if (slash_command == NULL)
-		return (NULL);
-
-	path = _getenv("PATH");
-	if (path == NULL)
+	if (argv == NULL)
 	{
-		free(slash_command);
+		perror("malloc");
 		return (NULL);
 	}
 
-	path_cpy = alloc_concat("", path);
-	path_arr = split(path_cpy, ":");
+	if (is_fullpath == 0)
+	{
+		argv[0] = NULL;
+		argv[1] = ++cur_word;
+		argv[2] = NULL;
+	}
+	else
+	{
+		not_found = access(cur_word, F_OK) && access(cur_word, X_OK);
+		if (!not_found)
+		{
+			for (i = 0; cur_word; i++)
+			{
+				argv[i] = cur_word;
+				cur_word = strtok(NULL, " ");
+			}
+			argv[i] = NULL;
+		}
+		else
+		{
+			argv[0] = NULL;
+			argv[1] = cur_word;
+			argv[2] = NULL;
+		}
+	}
+	return (argv);
+}
 
-	argv = splitcommand(slash_command, path_arr, 1);
-	free(path_arr);
-	free(path_cpy);
+/**
+ * parsecommand - Checks if a command exists, splitting it if applicable
+ * @slash_command: A command preceded by a / or a full path
+ * @is_fullpath: An int indicating if the command is a full path
+ *
+ * Return: An array of the command + arguments
+ */
+char **parsecommand(char *slash_command, int is_fullpath)
+{
+	char *path;
+	char *path_cpy;
+	char **path_arr;
+	char **argv;
 
-	if (argv == NULL)
-		return (NULL);
+	path = _getenv("PATH");
+
+	if (path == NULL)
+	{
+		argv = split_nopath(slash_command, is_fullpath);
+
+		if (argv == NULL)
+			perror("split_nopath");
+	}
+	else
+	{
+		path_cpy = alloc_concat("", path);
+		path_arr = split(path_cpy, ":");
+		argv = splitcommand(slash_command, path_arr, is_fullpath);
+
+		free_everything(2, path_cpy, path_arr);
+	}
 
 	return (argv);
 }
+
+void excommand(
+		char **argv,
+		char *slash_command,
+		char **environ,
+		char *prog_name,
+		char *total_commands,
+		int is_terminal,
+		int is_fullpath,
+		int *stop
+		){
+
+	char *err;
+
+	if (argv[0] == NULL && argv[1])
+	{
+		err = err_notfound(argv[1], total_commands, prog_name);
+		if (err == NULL)
+			perror("malloc");
+		else
+			free(err);
+		free_everything(2, argv, slash_command);
+		if (!is_terminal)
+			exit(127);
+	}
+	else
+	{
+		*stop = exec_command(argv, environ, prog_name, is_terminal);
+		if (is_fullpath == 0)
+			free(argv[0]);
+		free_everything(2, argv, slash_command);
+	}
+}
+

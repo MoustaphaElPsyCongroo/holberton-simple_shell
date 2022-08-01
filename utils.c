@@ -117,3 +117,51 @@ void free_everything(int n, ...)
 
 	va_end(tofree);
 }
+
+/**
+ * checkfolderlist - Checks if a file exists in a list of paths
+ * @path_arr: List of folders
+ * @slash_file: File to search, prefixed by a /
+ *
+ * Return: The full path of the file if it exists, NULL otherwise
+ */
+char *checkfolderlist(char **path_arr, char *slash_file)
+{
+	int size = 1024;
+	char *buf;
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	int l = 0;
+
+	if (access(slash_file, F_OK) == 0)
+		return (slash_file);
+
+	while (path_arr[i])
+	{
+		buf = malloc(sizeof(char) * size);
+		if (buf == NULL)
+			return (NULL);
+
+		while (path_arr[i][j])
+			buf[k++] = path_arr[i][j++];
+		while (slash_file[l])
+			buf[k++] = slash_file[l++];
+		buf[k] = 0;
+
+		if (access(buf, F_OK) != 0)
+		{
+			i++;
+			j = 0;
+			k = 0;
+			l = 0;
+			free(buf);
+		}
+		else
+		{
+			return (buf);
+		}
+	}
+	return (NULL);
+}
+

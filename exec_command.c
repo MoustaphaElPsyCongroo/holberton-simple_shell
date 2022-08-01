@@ -10,6 +10,7 @@
  * @path: Array containing the path to the program to execute and arguments
  * @env: Array of strings representing the current environement
  * @prog_name: Name of the shell
+ * @is_terminal: Int indicating if the code is launched from a terminal
  *
  *
  * Return: 0
