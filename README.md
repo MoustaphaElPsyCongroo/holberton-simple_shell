@@ -60,11 +60,13 @@ Clone This Repo
 git clone https://github.com/MoustaphaElPsyCongroo/holbertonschool-simple_shell.git
 ```
 ## Compilation
+
 ```sh
 gcc -Wall -werror -wextra -pedantic *.c -o hsh
-``
+```
 
 ## Execute the command below after compilation:
+
 ```sh
 $ ./hsh
 ```
