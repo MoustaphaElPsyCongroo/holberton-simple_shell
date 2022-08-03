@@ -99,14 +99,16 @@ $
 ## Files
 | Files | Description |
 | ----- | ----------- |
-| Authors |Contributors in this repository |
-| README.md | information about this repository |
+| Authors |contributors in this repository |
+| README.md | informations about this project |
 | exec_command.c| execute builtins and commands |
-| main.c | main arguments functions |
-| parsecommand.c | parses command line |
-| print_errors | prints error to standard output |
-| readcommand.c | reads input
-| simple_shell .h | prototypes functions and hearders |
+| main.c | entry point |
+| parsecommand.c | parses command |
+| print_errors | prints to standard error |
+| readcommand.c | reads input |
+| simple_shell .h | header file: function prototypes |
 | split.c | Tokenizes a string |
-|utils.c | 
+|utils.c | collection of utility functions |
 |man_1_simple_shell | manual page |
+
+## Contributors
