@@ -42,8 +42,10 @@ The aim of this projet was to make us comprehend how a shell works. what environ
 
 
 ## Usage
-To run this program,
-Clone This Repo
+This program was coded on Ubuntu 20.04 LTS
+
+To run this program:
+Clone this repo
 
 ```sh
 git clone https://github.com/MoustaphaElPsyCongroo/holbertonschool-simple_shell.git
