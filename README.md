@@ -2,11 +2,9 @@
 
 ## _Introduction_
 
-A Shell is the software program that provides a user interface to access OS services. its is a command-line interpreter.  Depending on the type of interface they use, shells can be of various types, in this case, a shell program of the type sh (Bourne Shell) will be developed. Users usually interact with a shell using a terminal emulator that is used to input data into a computer or computer system and display or print the data. In this repo is a Holberton school project.
-This shell works on : interactive and non interactive mode.
-
-
-## Allowed funtions used
+A Shell is the software program that provides a user interface to access OS services. its is a command-line interpreter. This respository contains simple shell team project for holberton school. This shell works on : interactive and non interactive mode.
+The aim of this projet was to make us comprehend how a shell works. what environment is, the difference between functions and system calls and how to create processes.
+## Allowed functions used
 - access (man 2 access)
 - chdir (man 2 chdir)
 - close (man 2 close)
@@ -39,19 +37,6 @@ This shell works on : interactive and non interactive mode.
 - wait4 (man 2 wait4)
 - write (man 2 write)
 
-## Requirements:
-
-General.
-- Allowed editors: vi, vim, emacs
-- All your files will be compiled on Ubuntu 14.04 LTS
-- Your programs and functions will be compiled with gcc 4.8.4 using the flags -Wall -Werror -Wextra and -pedantic
-- All your files should end with a new line
-- A README.md file, at the root of the folder of the project is mandatory
-- Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
-- Your shell should not have any memory leaks
-- No more than 5 functions per file
-- All your header files should be include guarded
-
 ## Usage
 To run this program,
 Clone This Repo
@@ -79,8 +64,6 @@ It wil then display a simple prompt and wait for commands.
 ```sh
 $
 ```
-A command will be of the type $ command
-This shell can handle two types of commands: builtins and normal program.
 
 ## Interactive-mode
 
@@ -107,12 +90,6 @@ hsh main.c shell.c test_ls_2
 hsh main.c shell.c test_ls_2
 $
 ```
-## File description
-- stdin : stdin: stdin, used to send data to the child process
-- stdout: stdout, used for receiving data from the child process
-- stderr: stderr, used for communicating logs & errors
-- childProcess: the process instance created via fork()
-
 ## Files
 | Files | Description |
 | ----- | ----------- |
@@ -123,10 +100,7 @@ $
 | parsecommand.c | parses command line |
 | print_errors | prints error to standard output |
 | readcommand.c | reads input
-| simple_shell.c |
 | simple_shell .h | prototypes functions and hearders |
 | split.c | Tokenizes a string |
-|utils.c |
-|man_1_simple_shell
-
-## Algorithm (See flowchart)
+|utils.c | 
+|man_1_simple_shell | manual page |
