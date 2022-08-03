@@ -2,8 +2,10 @@
 
 ## _Introduction_
 
-A Shell is the software program that provides a user interface to access OS services. its is a command-line interpreter. This respository contains simple shell team project for holberton school. This shell works on : interactive and non interactive mode.
+A Shell is the software program that provides a user interface to access OS services. It is a command-line interpreter. This respository contains Simple Shell, our team project at Holberton School. This shell works on **interactive** and **non interactive** mode.
+
 The aim of this projet was to make us comprehend how a shell works. what environment is, the difference between functions and system calls and how to create processes.
+
 ## Allowed functions used
 - access (man 2 access)
 - chdir (man 2 chdir)
