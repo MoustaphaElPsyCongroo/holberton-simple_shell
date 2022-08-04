@@ -43,11 +43,8 @@ int main(__attribute__((unused)) int ac, char **av)
 			 );
 	}
 
-	if (stop > 0)
-	{
-		perror("Execve error");
-		if (!is_terminal)
-			exit(stop);
-	}
+	if (stop > 0 && !is_terminal)
+		exit(stop);
+
 	return (0);
 }
