@@ -2,9 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <string.h>
 
 /**
  * main - Launch the Simple shell, calling each general function
@@ -28,9 +25,8 @@ int main(__attribute__((unused)) int ac, char **av)
 		is_terminal = isatty(0);
 		if (is_terminal)
 			write(STDIN_FILENO, "$ ", 2);
-
 		command = readcommand(total_commands);
-		if (command == NULL)
+		if (command == NULL || check_builtins(command) == 0)
 			continue;
 		slash_command = slashifycommand(command, &is_fullpath);
 		argv = parsecommand(slash_command, is_fullpath);
@@ -45,7 +41,6 @@ int main(__attribute__((unused)) int ac, char **av)
 				is_terminal,
 				is_fullpath, &stop
 			 );
-
 	}
 
 	if (stop > 0)
