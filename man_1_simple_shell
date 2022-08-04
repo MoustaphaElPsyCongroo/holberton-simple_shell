@@ -1,58 +1,66 @@
-. TH Simple Shell "1" "28/07/2022" "vi.0" "man page"
+.\"
+.\"
+. TH Simple Shell "1" "28/07/2022" "man page"
 .hy
 .SH NAME
 .PP
-simple_shell simple command line interpreter
+simple_shell - simple command line interpreter
 .SH SYNOPSIS
-.B  ./hsh
+.B	./hsh
+
 [command] [options] [FILE]
+
 \f[B]include "simple_shell.h"
 .SH DESCRIPTION
 .PP
+
 **simple_shell is a mini software that reads lines from the terminal, interpretes and executes them in a standard output, the computer program 
- provides a user interface to access the services of the operating system.**
- .SH  RETURN VALUE
- In success return always  0.
- If an error occured (case sensitive  or doesn't exist in the $PATH), the simple_shell exits the child process, displays an error message and returns with a new prompt.
- .SH USAGE
- To run the shell you need to compile all the .c files using GNU Compiler example :
- .P
- .RS
- .B $ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
- .B Once compiled, to start the program, run:
- $ ./hsh
+provides a user interface to access the services of the operating system.**
+.SH  RETURN VALUE
 
- .SH EXAMPLES
- Below an example of interactive mode:
- $ ./hsh
- ($) /bin/ls
+In success return always  0.
+If an error occured (case sensitive  or doesn't exist in the $PATH), the simple_shell exits the child process, displays an error message and returns with a new prompt.
 
- .PP
+.SH USAGE
+To run the shell you need to compile all the .c files using GNU Compiler example :
+.P
+.RS
+.B $ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+.B Once compiled, to start the program, run:
 
+$ ./hsh
 
- .SH BUILTINS
- Builtins return zero on success and one or two on incorrect usage (indicated by a corresponding error message).
- The following builtin commands are supported:
- .B exit [Status]
+.SH EXAMPLES
+Below an example of interactive mode:
 
- - Exit the shell
+$ ./hsh
+
+($) /bin/ls
+
+.PP
 
 
- \&
- .SH INVOCATION
- simple_shell is started with the standard input connected to the terminal (as determined by \fIisatty(3)\fR), the interactive mode is executed. Also non-interactively option can be executed.
- When simple_shell  is executed interactively, the prompt is displayed  \#c_is_fun$ \fR to read any command, the command line argument is invoked and is treated as the first argument.
+.SH BUILTINS
+Builtins return zero on success and one or two on incorrect usage (indicated by a corresponding error message).
+The following builtin commands are supported:
+.B exit [Status]
 
+Exit the shell
 
- .SH BUGS
- .PP
+\&
+.SH INVOCATION
+simple_shell is started with the standard input connected to the terminal (as determined by \fIisatty(3)\fR), the interactive mode is executed. Also non-interactively option can be executed.
+When simple_shell  is executed interactively, the prompt is displayed  \#c_is_fun$ \fR to read any command, the command line argument is invoked and is treated as the first argument.
 
- simple_shell (hsh) for now don't support  builtins such as cd , echo ...
+.SH BUGS
+.PP
 
- .SH SEE ALSO
- access(2), chdir(2), execve(2), _exit(2), exit(3), fflush(3), fork(2), free(3), isatty(3), getcwd(3), malloc(3), open(2), read(2), sh(1), signal(2), stat(2), wait(2), write(2)
- .This man page is based on the man page bash(1)
- . 
- . SH AUTHORS
-Elizabeth Behagehel
+simple_shell (hsh) for now don't support  builtins such as cd , echo ...
+
+.SH SEE ALSO
+access(2), chdir(2), execve(2), _exit(2), exit(3), fflush(3), fork(2), free(3), isatty(3), getcwd(3), malloc(3), open(2), read(2), sh(1), signal(2), stat(2), wait(2), write(2)
+.This man page is based on the man page bash(1)
+. 
+. SH AUTHORS
+Elizabeth Behaghel
 Moustapha Tall
