@@ -114,4 +114,4 @@ $
 ## Authors
 Moustapha "[MoustaphaElPsyCongroo](https://github.com/MoustaphaElPsyCongroo)" Tall (*[Linkedin](https://www.linkedin.com/in/moustapha-tall-b26960183/)*)
 
-Emizabeth "[Elizbeh](https://github.com/Elizbeh)" Behaghel (*[Linkedin](https://www.linkedin.com/in/elizabeth-behaghel)*)
+Elizabeth "[Elizbeh](https://github.com/Elizbeh)" Behaghel (*[Linkedin](https://www.linkedin.com/in/elizabeth-behaghel)*)
