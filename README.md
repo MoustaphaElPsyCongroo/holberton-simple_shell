@@ -107,8 +107,11 @@ $
 | print_errors | prints to standard error |
 | readcommand.c | reads input |
 | simple_shell .h | header file: function prototypes |
-| split.c | Tokenizes a string |
+| split.c | tokenizes a string |
 |utils.c | collection of utility functions |
 |man_1_simple_shell | manual page |
 
-## Contributors
+## Authors
+Moustapha "[MoustaphaElPsyCongroo](https://github.com/MoustaphaElPsyCongroo)" Tall (*[Linkedin](https://www.linkedin.com/in/moustapha-tall-b26960183/)*)
+
+Emizabeth "[Elizbeh](https://github.com/Elizbeh)" Behaghel (*[Linkedin](https://www.linkedin.com/in/elizabeth-behaghel)*)
